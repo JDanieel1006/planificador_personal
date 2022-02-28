@@ -3,6 +3,7 @@
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProyectoController;
 use App\Http\Controllers\UsuariosController;
+use App\Http\Controllers\AsignacionController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -39,6 +40,12 @@ Route::get('/edit',[UsuariosController::class,'edit'])->name('edit');
 Route::post('/update',[UsuariosController::class,'update'])->name('update');
 
 Route::delete('/delete',[UsuariosController::class,'delete'])->name('delete');
+
+// RUTAS ASIGNACION
+
+Route::resource('/asignacion',AsignacionController::class);
+
+Route::get('/proyectos.fetchall',[AsignacionController::class, 'fetchAll'])->name('proyectos.fetchAll');
 
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {

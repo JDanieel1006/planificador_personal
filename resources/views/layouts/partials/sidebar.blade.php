@@ -42,7 +42,7 @@
 
     <!-- Nav Item - Project Assignment -->
     <li class="nav-item">
-        <a class="nav-link" href="#">
+        <a class="nav-link" href="{{route('asignacion.index')}}">
             <i class="fa-solid fa-file-contract"></i>
             <span>Asignacion de proyectos</span></a>
     </li>
