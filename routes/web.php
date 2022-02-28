@@ -9,23 +9,37 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-// VISTAS
 
 Route::get('/panel-administrativo', [HomeController::class,'index'])->name('home');
+
+// RUTAS PROYECTO
 
 Route::resource('/proyectos',ProyectoController::class);
 
 Route::post('/proyectos',[ProyectoController::class,'store'])->name('proyectos');
 
-Route::get('/fetchall',[ProyectoController::class, 'fetchAll'])->name('fetchAll');
+Route::get('/proyectos.fetchall',[ProyectoController::class, 'fetchAll'])->name('proyectos.fetchAll');
 
-Route::get('/edit',[ProyectoController::class,'edit'])->name('edit');
+Route::get('/proyectos.edit',[ProyectoController::class,'edit'])->name('proyectos.edit');
 
-Route::post('/update',[ProyectoController::class,'update'])->name('update');
+Route::post('/proyectos.update',[ProyectoController::class,'update'])->name('proyectos.update');
 
-Route::delete('/delete',[ProyectoController::class,'delete'])->name('delete');
+Route::delete('/proyectos.delete',[ProyectoController::class,'delete'])->name('proyectos.delete');
+
+// RUTAS USUARIO
 
 Route::resource('/usuarios',UsuariosController::class);
+
+Route::post('/usuarios',[UsuariosController::class,'store'])->name('usuarios');
+
+Route::get('/usuarios.fetchall',[UsuariosController::class, 'fetchAll'])->name('fetchAll');
+
+Route::get('/edit',[UsuariosController::class,'edit'])->name('edit');
+
+Route::post('/update',[UsuariosController::class,'update'])->name('update');
+
+Route::delete('/delete',[UsuariosController::class,'delete'])->name('delete');
+
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     return view('dashboard');

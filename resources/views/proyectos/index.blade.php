@@ -53,7 +53,7 @@
     //Mostrar todos los registros
     function fetchAllEmployees(){
         $.ajax({
-            url: '{{ route('fetchAll') }}',
+            url: '{{ route('proyectos.fetchAll') }}',
             method: 'get',
             success: function(response) {
                 $("#show_all_employees").html(response);
@@ -80,18 +80,17 @@
         }).then((result) => {
           if (result.isConfirmed) {
             $.ajax({
-              url: '{{ route('delete') }}',
+              url: '{{ route('proyectos.delete') }}',
               method: 'delete',
               data: {
                 id: id,
                 _token: csrf
               },
               success: function(response) {
-                console.log(response);
                 Swal.fire(
                   'Eliminado!',
                   'Proyecto eliminado.',
-                  'OK'
+                  'success'
                 )
                 fetchAllEmployees();
               }
@@ -106,7 +105,7 @@
         const fd = new FormData(this);
         $("#edit_employee_btn").text('Actualizando..');
         $.ajax({
-            url: '{{route('update')}}',
+            url: '{{route('proyectos.update')}}',
             method: 'POST',
             data: fd,
             cache: false,
@@ -115,8 +114,8 @@
             success: function(response) {
             if (response.status == 200) {
               Swal.fire(
-                'Updated!',
-                'Employee Updated Successfully!',
+                'Actualizado!',
+                'Proyecto Actualizado!',
                 'success'
               )
               fetchAllEmployees();
@@ -133,7 +132,7 @@
         e.preventDefault();
         let id = $(this).attr('id');
         $.ajax({
-            url: '{{route('edit')}}',
+            url: '{{route('proyectos.edit')}}',
             method: 'get',
             data: {
                 id: id,
@@ -166,15 +165,15 @@
             success: function(response) {
                 if (response.status == 200) {
                     Swal.fire(
-                            'Added!',
-                            'Employee Added Successfully!',
+                            'Añadido!',
+                            'Proyecto Añadido Correctamente!',
                             'success'
                         )
                         fetchAllEmployees();
                 }
                 $("#add_employee_btn").text('Add Employee');
                 $("#add_employee_form")[0].reset();
-                $("#addEmployeeModal").modal('hide');
+                $("#createMdl").modal('hide');
             }
         });
     })

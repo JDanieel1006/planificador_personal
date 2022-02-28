@@ -20,6 +20,7 @@ class CreateUsuariosTable extends Migration
             $table->string('telefono_usuario',15);
             $table->string('password',20);
             $table->integer('tipo_usuario');
+            $table->string('avatar');
             $table->timestamps();
         });
     }

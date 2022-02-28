@@ -14,6 +14,7 @@ class ProyectoController extends Controller
         return view('proyectos.index');
     }
 
+    //Creacion de un nuevo proyecto
     public function store(Request $request){
         $empData = ['nombre_proyecto' => $request->nombre_proyecto, 
                   'descripcion_proyecto' => $request->descripcion_proyecto, 
@@ -27,12 +28,6 @@ class ProyectoController extends Controller
       ]);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     //Mostrar los proyectos
 	public function fetchAll() {
 		$emps = Proyecto::all();
@@ -64,29 +59,17 @@ class ProyectoController extends Controller
 			$output .= '</tbody></table>';
 			echo $output;
 		} else {
-			echo '<h1 class="text-center text-secondary my-5">No record present in the database!</h1>';
+			echo '<h1 class="text-center text-secondary my-5">Sin Proyectos en la Base de Datos!</h1>';
 		}
 	}
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+    //Obtener los datos para edicion del proyecto
     public function edit(Request $request){
         $id = $request->id;
         $emp = Proyecto::find($id);
         return response()->json($emp);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     // Editar empleado
     public function update(Request $request) {
         $emp = Proyecto::find($request->pro_id);

@@ -12,8 +12,8 @@
                 <div class="modal-body p-4 bg-light">
                     <div class="row">
                         <div class="col-lg">
-                            <label for="fname">First Name</label>
-                            <input type="text" name="edit_nombre" id="edit_nombre" class="form-control" placeholder="First Name"
+                            <label for="fname">Nombre del proyecto</label>
+                            <input type="text" name="edit_nombre" id="edit_nombre" class="form-control" placeholder=""
                                 required>
                         </div>
                     </div>
