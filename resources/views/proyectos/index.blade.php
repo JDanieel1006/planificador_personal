@@ -24,21 +24,8 @@
                 </div>
             </div>
             <!-- Card Body -->
-            <div class="card-body table-responsive">
-                <table id="dt-proyectos" class="table table-bordered table-hover nowrap dts" style="width:100%">
-                    <thead>
-                        <tr>
-                            <th class="text-center">Nombre</th>
-                            <th class="text-center">Lenguaje</th>
-                            <th class="text-center">Fecha_inicio</th>
-                            <th class="text-center">Fecha_fin</th>
-                            <th class="text-center">Herramientas</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-
-                    </tbody>
-                </table>
+            <div class="card-body table-responsive" id="show_all_employees">
+                <h1 class="text-center text-secondary my-5">Loading...</h1>
             </div>
         </div>
     </div>
@@ -59,5 +46,138 @@
 
 <script src="https://cdn.datatables.net/1.11.4/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/1.11.4/js/dataTables.bootstrap4.min.js"></script>
+<script >
+
+    fetchAllEmployees();
+
+    //Mostrar todos los registros
+    function fetchAllEmployees(){
+        $.ajax({
+            url: '{{ route('fetchAll') }}',
+            method: 'get',
+            success: function(response) {
+                $("#show_all_employees").html(response);
+                $("table").DataTable({
+                order: [0, 'desc']
+            });
+        }
+        });
+    }
+
+    //Eliminar proyecto
+    $(document).on('click', '.deleteIcon', function(e) {
+        e.preventDefault();
+        let id = $(this).attr('id');
+        let csrf = '{{ csrf_token() }}';
+        Swal.fire({
+          title: 'Confirmacion',
+          text: "Desea eliminar el proyecto ?",
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Si, eliminar!'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            $.ajax({
+              url: '{{ route('delete') }}',
+              method: 'delete',
+              data: {
+                id: id,
+                _token: csrf
+              },
+              success: function(response) {
+                console.log(response);
+                Swal.fire(
+                  'Eliminado!',
+                  'Proyecto eliminado.',
+                  'OK'
+                )
+                fetchAllEmployees();
+              }
+            });
+          }
+        })
+    });
+
+    //Editar proyecto
+    $("#edit_employee_form").submit(function(e){
+        e.preventDefault();
+        const fd = new FormData(this);
+        $("#edit_employee_btn").text('Actualizando..');
+        $.ajax({
+            url: '{{route('update')}}',
+            method: 'POST',
+            data: fd,
+            cache: false,
+            processData: false,
+            contentType: false,
+            success: function(response) {
+            if (response.status == 200) {
+              Swal.fire(
+                'Updated!',
+                'Employee Updated Successfully!',
+                'success'
+              )
+              fetchAllEmployees();
+            }
+            $("#edit_employee_btn").text('Update Employee');
+            $("#edit_employee_form")[0].reset();
+            $("#editEmployeeModal").modal('hide');
+          }
+        })
+    })
+
+    //Buscar datos del proyecto por id
+    $(document).on('click', '.editIcon', function(e) {
+        e.preventDefault();
+        let id = $(this).attr('id');
+        $.ajax({
+            url: '{{route('edit')}}',
+            method: 'get',
+            data: {
+                id: id,
+                _token: '{{csrf_token()}}'
+            },
+            success:function(res){
+                $("#edit_nombre").val(res.nombre_proyecto);
+                $("#edit_descripcion").val(res.descripcion_proyecto);
+                $("#edit_lenguaje").val(res.lenguaje);
+                $("#edit_fecha_inicio").val(res.fecha_inicio);
+                $("#edit_fecha_fin").val(res.fecha_fin);
+                $("#pro_id").val(res.id);
+            }
+        });
+    });
+
+    //Añadir un nuevo proyecto
+    $("#add_employee_form").submit(function(e) {
+        e.preventDefault();
+        const fd = new FormData(this);
+        $("#add_employee_btn").text('Adding...');
+        console.log('antes del ajax');
+        $.ajax({
+            url: '{{route('proyectos')}}',
+            method: 'POST',
+            data: fd,
+            cache: false,
+            contentType: false,
+            processData: false,
+            success: function(response) {
+                if (response.status == 200) {
+                    Swal.fire(
+                            'Added!',
+                            'Employee Added Successfully!',
+                            'success'
+                        )
+                        fetchAllEmployees();
+                }
+                $("#add_employee_btn").text('Add Employee');
+                $("#add_employee_form")[0].reset();
+                $("#addEmployeeModal").modal('hide');
+            }
+        });
+    })
+</script>
 
 @endpush

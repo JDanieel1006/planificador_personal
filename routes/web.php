@@ -9,9 +9,21 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+// VISTAS
+
 Route::get('/panel-administrativo', [HomeController::class,'index'])->name('home');
 
 Route::resource('/proyectos',ProyectoController::class);
+
+Route::post('/proyectos',[ProyectoController::class,'store'])->name('proyectos');
+
+Route::get('/fetchall',[ProyectoController::class, 'fetchAll'])->name('fetchAll');
+
+Route::get('/edit',[ProyectoController::class,'edit'])->name('edit');
+
+Route::post('/update',[ProyectoController::class,'update'])->name('update');
+
+Route::delete('/delete',[ProyectoController::class,'delete'])->name('delete');
 
 Route::resource('/usuarios',UsuariosController::class);
 
